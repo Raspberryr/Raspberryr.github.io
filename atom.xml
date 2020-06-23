@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://raspberryr.github.io/</id>
     <title>市民张三</title>
-    <updated>2020-06-23T15:25:31.468Z</updated>
+    <updated>2020-06-23T15:26:49.198Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://raspberryr.github.io/"/>
     <link rel="self" href="https://raspberryr.github.io/atom.xml"/>
@@ -17,7 +17,7 @@
         </link>
         <updated>2020-06-23T15:19:55.000Z</updated>
         <content type="html"><![CDATA[<h2 id="我是谁">我是谁？👦</h2>
-<p>我是张三，一个知道分子，热衷于了解稀奇古怪的事情。如果你愿意，我可以和你交流文学、音乐和创客等等。</p>
+<p>我是张三，一个知道分子，热衷于了解稀奇古怪的事情。如果你愿意，我可以和你交流文学、音乐和创客活动等等。</p>
 <h2 id="这是哪">这是哪？ 👨‍💻</h2>
 <p>这里是我利用Github和Gridea搭建的静态博客，我会在这里分享一些大学的学习笔记和个人随笔。</p>
 <p>现在这里空落落的，但是后续我会把丰富的内容搬运到这里，希望有一天你也能在这里找到有用的知识。</p>
