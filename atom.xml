@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://localhost:4000</id>
+    <id>https://raspberryr.github.io/</id>
     <title>市民张三</title>
-    <updated>2020-06-29T16:58:57.952Z</updated>
+    <updated>2020-06-29T16:59:07.323Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://localhost:4000"/>
-    <link rel="self" href="http://localhost:4000/atom.xml"/>
+    <link rel="alternate" href="https://raspberryr.github.io/"/>
+    <link rel="self" href="https://raspberryr.github.io/atom.xml"/>
     <subtitle>一个知道分子的自述</subtitle>
-    <logo>http://localhost:4000/images/avatar.png</logo>
-    <icon>http://localhost:4000/favicon.ico</icon>
+    <logo>https://raspberryr.github.io/images/avatar.png</logo>
+    <icon>https://raspberryr.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 市民张三</rights>
     <entry>
         <title type="html"><![CDATA[关于郑州，我想的全是朱格乐]]></title>
-        <id>http://localhost:4000/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
-        <link href="http://localhost:4000/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
+        <id>https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
+        <link href="https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
         </link>
         <updated>2020-06-29T16:56:35.000Z</updated>
         <content type="html"><![CDATA[<h1 id="百无聊赖的周一">百无聊赖的周一</h1>
@@ -52,8 +52,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[你好，我是张三]]></title>
-        <id>http://localhost:4000/post/ni-hao-wo-shi-zhang-san/</id>
-        <link href="http://localhost:4000/post/ni-hao-wo-shi-zhang-san/">
+        <id>https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/</id>
+        <link href="https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/">
         </link>
         <updated>2020-06-23T15:19:55.000Z</updated>
         <content type="html"><![CDATA[<h2 id="我是谁">我是谁？👦</h2>
