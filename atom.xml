@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://raspberryr.github.io/</id>
     <title>市民张三</title>
-    <updated>2020-06-29T17:01:40.960Z</updated>
+    <updated>2020-08-06T06:50:13.980Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://raspberryr.github.io/"/>
     <link rel="self" href="https://raspberryr.github.io/atom.xml"/>
@@ -10,6 +10,70 @@
     <logo>https://raspberryr.github.io/images/avatar.png</logo>
     <icon>https://raspberryr.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 市民张三</rights>
+    <entry>
+        <title type="html"><![CDATA[用Visual Studio Code 配置 Arduino 开发环境中遇到的问题]]></title>
+        <id>https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/</id>
+        <link href="https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/">
+        </link>
+        <updated>2020-08-06T06:47:34.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="用visual-studio-code-配置-arduino-开发环境中遇到的问题">用Visual Studio Code 配置 Arduino 开发环境中遇到的问题</h1>
+<p>最近借助于Visual Studio Code的Arduino插件实现了用VScode来开发Arduino，安装插件以及配置的过程参考网上流传的教程很快就完成了，但是在实际编译的过程中，VScode会出现各种问题，虽然最终Arduino能够顺利的上传并且运行代码，但是提示诸多的Error实在是让强迫症难以忍受，遂花费一下午的时间借助Google整理了各种问题的解决方案，最终成功的消除了全部的Error。</p>
+<p>于是我想写下这篇博客来记录这个过程，并且整理问题的解决方案以备以后查阅，也供所有在配置过程中遇到相同问题的人参考。</p>
+<h2 id="cannot-open-source-file-xxxxh-dependency-of-xxxxh">'cannot open source file &quot;xxxx.h&quot; (dependency of &quot;xxxx.h&quot;)'</h2>
+<p>在选择编译之后报错：‘无法打开源文件“xxx.h”（依赖于“xxxx.h”）’，这是说明无法检测到头文件，解决方法是直接找到该文件的位置（可以使用Wox或者Everything之类的软件直接搜索），将路径粘贴在.vscode文件夹下面的c_cpp_properties.json文件的&quot;includePath&quot;:[]中，例如我的路径为：</p>
+<pre><code class="language-json">&quot;includePath&quot;: [
+                &quot;F:\\Arduino\\tools\\**&quot;,
+                &quot;F:\\Arduino\\hardware\\arduino\\avr\\**&quot;,
+                &quot;F:\\Arduino\\libraries&quot;,
+                &quot;F:\\Arduino\\hardware\\tools\\avr\\avr\\include&quot;,
+                &quot;F:\\Arduino\\libraries\\Servo\\src&quot;,
+                &quot;F:\\Arduino\\libraries\\Keypad\\src&quot;,
+                &quot;F:\\Arduino\\libraries\\Adafruit_SSD1306&quot;,
+                &quot;F:\\Arduino\\libraries\\Adafruit_GFX_Library&quot;,
+                &quot;F:\\Arduino\\hardware\tools\\avr\\avr\\include\\avr&quot;
+            ],
+</code></pre>
+<p>这个路径取决于每个人的Arduino安装位置以及libraries文件的储存位置，粘贴完之后重新编译上载，之前的报错就消失了。</p>
+<h2 id="未定义标识符serial">未定义标识符“Serial”</h2>
+<blockquote>
+<p>产生这个的原因是头文件索引丢失，intelliSense不能自动找到必要的头文件路径。</p>
+<p>Currently，the VSCode Arduino extension leverages the C/C++ for Visual Studio Code for languages service and debugging.You can find the root cause and solutions from these links.</p>
+<p>.</p>
+</blockquote>
+<p>解决方法是手动配置头文件，在设置中强制intellisense使用Tag Parser，递归方式检索头文件。打开settings文件，加入</p>
+<pre><code class="language-json">&quot;C_Cpp.intelliSenseEngineFallback&quot;:&quot;Disabled&quot;,
+&quot;C_Cpp.intelliSenseEngine&quot;:&quot;Tag Parser&quot;,
+</code></pre>
+<p>加入之后重新编译上载，报错消失。</p>
+<h2 id="exit-with-code-1">Exit with code = 1</h2>
+<p>出现这种情况会导致编译上载不成功，出现的可能有</p>
+<ol>
+<li>使用中文方式命名文件夹与文件，或者命名中存在空格</li>
+<li>代码中存在大小写的误用</li>
+</ol>
+<p>解决的办法可以使用“_”下划线来代替“ ”空格，或者转移文件夹，确保路径中不存在中文文件夹。如此操作之后，报错消失。</p>
+<p>如果是代码错误，则更正代码中的错误。</p>
+<h2 id="输出端汉语乱码">输出端汉语乱码</h2>
+<p>输出端汉语乱码的原因是编码方式不同导致的，因为VSCode的Arduino插件本身并不提供编译的IDE，需要调用我们下载的IDE，在1.8.7以后的Arduino IDE会出现编码乱码的情况，可以使用以下方法解决。</p>
+<h4 id="更换ide">更换IDE</h4>
+<p>因为VSCode要调用Arduino IDE来进行，将Arduino的IDE降级到1.8.7以前的版本就可以解决。</p>
+<blockquote>
+<p>历史版本IDE百度云下载地址：https://pan.baidu.com/s/1xAWW3ABFv7A2aM1wEsZgQQ<br>
+提取码：sal7</p>
+</blockquote>
+<h4 id="改变ide语言">改变IDE语言</h4>
+<p>Arduino IDE默认是系统的语言（我是汉语），如果更改输出的语言为English，那么就不存在输出端汉语乱码的情况。</p>
+<h4 id="更改系统的编码格式">更改系统的编码格式</h4>
+<p>进行如下操作，打开Windows设置&gt;时间与语言&gt;语言&gt;相关设置：日期、时间和区域格式设置&gt;其他日期、时间和区域设置&gt;区域：更改日期、时间或数字格式&gt;管理&gt;更改系统区域设置&gt;勾选“Beta版：使用Unicode UTF-8 提供全球语言支持”&gt;确认并且重启电脑</p>
+<p>再次打开VSCode进行编译上载，乱码消失。</p>
+<blockquote>
+<p>可能是因为三维建模软件对于汉语的支持并不是很好，题主在修改系统的编码格式之后无法启动Solidworks，每次都在加载注册表的时候闪退，不知道是否还有其他的软件存在这种情况，如果出现了，可能是因为改变了系统的编码格式导致的。</p>
+</blockquote>
+<h3 id="参考博客">参考博客</h3>
+<p>[1]https://www.bilibili.com/read/cv3298341/</p>
+<p>[2]https://www.arduino.cn/forum.php?mod=viewthread&amp;tid=94607&amp;highlight=vscode</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[关于郑州，我想的全是朱格乐]]></title>
         <id>https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
