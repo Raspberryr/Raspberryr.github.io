@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://localhost:4001</id>
+    <id>https://raspberryr.github.io/</id>
     <title>市民张三</title>
-    <updated>2021-01-28T14:30:12.992Z</updated>
+    <updated>2021-01-28T14:35:01.606Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://localhost:4001"/>
-    <link rel="self" href="http://localhost:4001/atom.xml"/>
+    <link rel="alternate" href="https://raspberryr.github.io/"/>
+    <link rel="self" href="https://raspberryr.github.io/atom.xml"/>
     <subtitle>一个知道分子的自述</subtitle>
-    <logo>http://localhost:4001/images/avatar.png</logo>
-    <icon>http://localhost:4001/favicon.ico</icon>
+    <logo>https://raspberryr.github.io/images/avatar.png</logo>
+    <icon>https://raspberryr.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 市民张三</rights>
     <entry>
         <title type="html"><![CDATA[树莓派配置OpenCv]]></title>
-        <id>http://localhost:4001/post/shu-mei-pai-pei-zhi-opencv/</id>
-        <link href="http://localhost:4001/post/shu-mei-pai-pei-zhi-opencv/">
+        <id>https://raspberryr.github.io/post/shu-mei-pai-pei-zhi-opencv/</id>
+        <link href="https://raspberryr.github.io/post/shu-mei-pai-pei-zhi-opencv/">
         </link>
         <updated>2021-01-28T14:28:25.000Z</updated>
         <content type="html"><![CDATA[<p>记录树莓派配置OpenCv的过程以及遇到的一些问题。</p>
@@ -56,7 +56,7 @@ sudo ldconfig
 <li>在安装OpenCv的过程中，一定要下载OpenCv源码，否咋在编译的过程中会在不同的进度出现不同的报错（大部分是丢失文件）。</li>
 <li>编译过程长达数小时，一定要给树莓派充足的供电。</li>
 </ol>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4001/post-images/1611844169021.png" alt="编译成功" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://raspberryr.github.io//post-images/1611844169021.png" alt="编译成功" loading="lazy"></figure>
 <h2 id="用python的cv2库运行opencv">用Python的CV2库运行OpenCv</h2>
 <h3 id="用cv2调用摄像头">用cv2调用摄像头</h3>
 <pre><code class="language-python"># -*- coding: utf-8 -*-
@@ -145,8 +145,8 @@ cap.release()
     </entry>
     <entry>
         <title type="html"><![CDATA[大学生们都在忙什么？]]></title>
-        <id>http://localhost:4001/post/da-xue-sheng-men-du-zai-mang-shi-me/</id>
-        <link href="http://localhost:4001/post/da-xue-sheng-men-du-zai-mang-shi-me/">
+        <id>https://raspberryr.github.io/post/da-xue-sheng-men-du-zai-mang-shi-me/</id>
+        <link href="https://raspberryr.github.io/post/da-xue-sheng-men-du-zai-mang-shi-me/">
         </link>
         <updated>2020-09-07T16:10:21.000Z</updated>
         <content type="html"><![CDATA[<h1 id="杰杰">杰杰</h1>
@@ -173,8 +173,8 @@ cap.release()
     </entry>
     <entry>
         <title type="html"><![CDATA[Windows Termianl 基于SSH访问树莓派（SSH配置与JSON基本语法）]]></title>
-        <id>http://localhost:4001/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/</id>
-        <link href="http://localhost:4001/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/">
+        <id>https://raspberryr.github.io/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/</id>
+        <link href="https://raspberryr.github.io/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/">
         </link>
         <updated>2020-08-09T17:00:29.000Z</updated>
         <content type="html"><![CDATA[<p>之前玩树莓派4B都是借助于显示屏利用图形界面来控制，但是因为暑假在家只有一台显示器，平时连接着笔记本电脑，每次想要调试都需要拔插HDMI线，很不方便；平时用SSH访问树莓派都是借助于putty，但是那个界面实在是太丑陋了，最近正巧又发现了Windows Terminal这个软件属实不错，可以集成各种终端，界面现代化，可定制程度高，于是想到能不能借助于SSH访问树莓派呢？</p>
@@ -308,8 +308,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[用Visual Studio Code 配置 Arduino 开发环境中遇到的问题]]></title>
-        <id>http://localhost:4001/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/</id>
-        <link href="http://localhost:4001/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/">
+        <id>https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/</id>
+        <link href="https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/">
         </link>
         <updated>2020-08-06T06:47:34.000Z</updated>
         <content type="html"><![CDATA[<h1 id="用visual-studio-code-配置-arduino-开发环境中遇到的问题">用Visual Studio Code 配置 Arduino 开发环境中遇到的问题</h1>
@@ -372,8 +372,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[关于郑州，我想的全是朱格乐]]></title>
-        <id>http://localhost:4001/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
-        <link href="http://localhost:4001/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
+        <id>https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
+        <link href="https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
         </link>
         <updated>2020-06-29T16:56:35.000Z</updated>
         <content type="html"><![CDATA[<h1 id="百无聊赖的周一">百无聊赖的周一</h1>
@@ -412,8 +412,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[你好，我是张三]]></title>
-        <id>http://localhost:4001/post/ni-hao-wo-shi-zhang-san/</id>
-        <link href="http://localhost:4001/post/ni-hao-wo-shi-zhang-san/">
+        <id>https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/</id>
+        <link href="https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/">
         </link>
         <updated>2020-06-23T15:19:55.000Z</updated>
         <content type="html"><![CDATA[<h2 id="我是谁">我是谁？👦</h2>
@@ -430,8 +430,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>http://localhost:4001/post/hello-gridea/</id>
-        <link href="http://localhost:4001/post/hello-gridea/">
+        <id>https://raspberryr.github.io/post/hello-gridea/</id>
+        <link href="https://raspberryr.github.io/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
