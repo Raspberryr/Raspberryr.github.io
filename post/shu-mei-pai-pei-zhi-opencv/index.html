@@ -1,0 +1,359 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>树莓派配置OpenCv | 市民张三</title>
+<link rel="shortcut icon" href="http://localhost:4001/favicon.ico?v=1611844186956">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="http://localhost:4001/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="树莓派配置OpenCv | 市民张三 - Atom Feed" href="http://localhost:4001/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="记录树莓派配置OpenCv的过程以及遇到的一些问题。
+安装OpenCv相关包
+#安装opencv相关工具
+sudo apt-get install build-essential cmake git pkg-config
+# 安装openc..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="http://localhost:4001">
+  <img class="avatar" src="http://localhost:4001/images/avatar.png?v=1611844186956" alt="">
+  </a>
+  <h1 class="site-title">
+    市民张三
+  </h1>
+  <p class="site-description">
+    一个知道分子的自述
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="http://localhost:4001post/ni-hao-wo-shi-zhang-san" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/Raspberryr" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+        <a href="https://weibo.com/p/1005057004315114/home?from=page_100505&amp;mod=TAB#place" target="_blank">
+          <i class="ri-weibo-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://www.zhihu.com/people/zhang-zi-xuan-5-37" target="_blank">
+          <i class="ri-zhihu-line"></i>
+        </a>
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              树莓派配置OpenCv
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-28
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>记录树莓派配置OpenCv的过程以及遇到的一些问题。</p>
+<h2 id="安装opencv相关包">安装OpenCv相关包</h2>
+<pre><code class="language-shell">#安装opencv相关工具
+sudo apt-get install build-essential cmake git pkg-config
+# 安装opencv图像工具包
+sudo apt-get install libjpeg8-dev 
+sudo apt-get install libtiff5-dev 
+sudo apt-get install libjasper-dev 
+sudo apt-get install libpng12-dev 
+#安装视频I/O包
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+#安装gtk2.0和优化函数包
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install libatlas-base-dev gfortran
+</code></pre>
+<h2 id="安装opencv">安装OpenCv</h2>
+<h3 id="下载opencv源码">下载OpenCv源码</h3>
+<pre><code class="language-shell">git clone https://github.com/opencv/opencv.git
+</code></pre>
+<h3 id="安装opencv-2">安装OpenCv</h3>
+<pre><code class="language-shell">#进入目录opencv下
+cd opencv
+#创建release文件夹
+mkdir release
+#进入目录release下
+cd release
+#cmake所有源文件并生成makefile
+cmake -D CMAKE_BUILD_TYPE=RELEASE \ 
+-D CMAKE_INSTALL_PREFIX=/usr/local ..
+#编译
+sudo make
+#安装
+sudo make install
+#更新动态链接库
+sudo ldconfig
+</code></pre>
+<ol>
+<li>在安装OpenCv的过程中，一定要下载OpenCv源码，否咋在编译的过程中会在不同的进度出现不同的报错（大部分是丢失文件）。</li>
+<li>编译过程长达数小时，一定要给树莓派充足的供电。</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="http://localhost:4001/post-images/1611844169021.png" alt="编译成功" loading="lazy"></figure>
+<h2 id="用python的cv2库运行opencv">用Python的CV2库运行OpenCv</h2>
+<h3 id="用cv2调用摄像头">用cv2调用摄像头</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+
+import cv2
+
+cap = cv2.VideoCapture(0) # 打开摄像头
+print(&quot;VideoCapture is opened?&quot;, cap.isOpened())
+
+while(True):
+
+    ret, frame = cap.read() # 读取摄像头图像
+    cv2.imshow(&quot;frame&quot;, frame) # 显示图片
+
+    if cv2.waitKey(1) &amp; 0xFF == ord('q'):
+        break
+
+cap.release() # 释放摄像头
+cv2.destroyAllWindows() # 关闭所有窗口
+</code></pre>
+<h4 id="效果">效果</h4>
+<p>桌面上弹出一个名为frame的窗口，窗口中为摄像头捕捉到的画面。</p>
+<blockquote>
+<p>待解决：</p>
+<p>这里似乎只有用远程桌面连接打开树莓派的桌面的时候才能够成功，如果是使用ssh访问，在WindowsTerminal中用命令行运行python程序则报错。</p>
+</blockquote>
+<h3 id="用cv2拍摄一段视频">用cv2拍摄一段视频</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+# 这一行代码解决不能输出中文的问题
+
+import cv2
+import time
+
+interval = 0.1           # 捕获图像的间隔，单位：秒
+num_frames = 60        # 捕获图像的总帧数
+out_fps = 24            # 输出文件的帧率
+
+# VideoCapture(0)表示打开默认的相机
+cap = cv2.VideoCapture(0)
+
+# 获取捕获的分辨率
+size =(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+
+# 设置要保存视频的编码，分辨率和帧率
+video = cv2.VideoWriter(
+    &quot;time_lapse.avi&quot;, 
+    cv2.VideoWriter_fourcc('M','P','4','2'), 
+    out_fps, 
+    size
+)
+
+# 对于一些低画质的摄像头，前面的帧可能不稳定，略过
+for i in range(42):
+    cap.read()
+
+# 开始捕获，通过read()函数获取捕获的帧
+try:
+    for i in range(num_frames):
+        _, frame = cap.read()
+        video.write(frame)
+
+        # 如果希望把每一帧也存成文件，比如制作GIF，则取消下面的注释
+        # filename = '{:0&gt;6d}.png'.format(i)
+        # cv2.imwrite(filename, frame)
+
+        print('Frame {} is captured.'.format(i))
+        time.sleep(interval)
+except KeyboardInterrupt:
+    # 提前停止捕获
+    print('Stopped! {}/{} frames captured!'.format(i, num_frames))
+
+# 释放资源并写入视频文件
+video.release()
+cap.release()
+</code></pre>
+<p>在python的开头记得加上<code># -*- coding: utf-8 -*-</code>这一行代码，可以解决无法显示汉语的问题。</p>
+<h4 id="效果-2">效果</h4>
+<p>运行python代码后，terminal会开始读秒，当截取完所有的帧数之后，会在桌面上生成命名为“time_lapse.avi”的视频文件。</p>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://blog.csdn.net/kyokozan/article/details/79192646">树莓派安装Opencv3完整过程</a></li>
+<li><a href="https://github.com/opencv/opencv">Opencv Github主页</a></li>
+<li><a href="https://www.cnblogs.com/shizhengwen/p/8719062.html">模块cv2的用法</a></li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%AE%89%E8%A3%85opencv%E7%9B%B8%E5%85%B3%E5%8C%85">安装OpenCv相关包</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85opencv">安装OpenCv</a>
+<ul>
+<li><a href="#%E4%B8%8B%E8%BD%BDopencv%E6%BA%90%E7%A0%81">下载OpenCv源码</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85opencv-2">安装OpenCv</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%A8python%E7%9A%84cv2%E5%BA%93%E8%BF%90%E8%A1%8Copencv">用Python的CV2库运行OpenCv</a>
+<ul>
+<li><a href="#%E7%94%A8cv2%E8%B0%83%E7%94%A8%E6%91%84%E5%83%8F%E5%A4%B4">用cv2调用摄像头</a>
+<ul>
+<li><a href="#%E6%95%88%E6%9E%9C">效果</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%A8cv2%E6%8B%8D%E6%91%84%E4%B8%80%E6%AE%B5%E8%A7%86%E9%A2%91">用cv2拍摄一段视频</a>
+<ul>
+<li><a href="#%E6%95%88%E6%9E%9C-2">效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0">参考文章</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="http://localhost:4001/post/da-xue-sheng-men-du-zai-mang-shi-me/">
+              <h3 class="post-title">
+                大学生们都在忙什么？
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '6ea698ffffbf77076505',
+    clientSecret: 'be37dead111901bbf5e570238873cf41c39b0e94',
+    repo: 'raspberryr.github.io',
+    owner: 'Raspberryr',
+    admin: ['Raspberryr'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="http://localhost:4001/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,19 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://raspberryr.github.io/</id>
+    <id>http://localhost:4001</id>
     <title>市民张三</title>
-    <updated>2021-01-28T05:02:16.533Z</updated>
+    <updated>2021-01-28T14:30:12.992Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://raspberryr.github.io/"/>
-    <link rel="self" href="https://raspberryr.github.io/atom.xml"/>
+    <link rel="alternate" href="http://localhost:4001"/>
+    <link rel="self" href="http://localhost:4001/atom.xml"/>
     <subtitle>一个知道分子的自述</subtitle>
-    <logo>https://raspberryr.github.io/images/avatar.png</logo>
-    <icon>https://raspberryr.github.io/favicon.ico</icon>
+    <logo>http://localhost:4001/images/avatar.png</logo>
+    <icon>http://localhost:4001/favicon.ico</icon>
     <rights>All rights reserved 2021, 市民张三</rights>
     <entry>
+        <title type="html"><![CDATA[树莓派配置OpenCv]]></title>
+        <id>http://localhost:4001/post/shu-mei-pai-pei-zhi-opencv/</id>
+        <link href="http://localhost:4001/post/shu-mei-pai-pei-zhi-opencv/">
+        </link>
+        <updated>2021-01-28T14:28:25.000Z</updated>
+        <content type="html"><![CDATA[<p>记录树莓派配置OpenCv的过程以及遇到的一些问题。</p>
+<h2 id="安装opencv相关包">安装OpenCv相关包</h2>
+<pre><code class="language-shell">#安装opencv相关工具
+sudo apt-get install build-essential cmake git pkg-config
+# 安装opencv图像工具包
+sudo apt-get install libjpeg8-dev 
+sudo apt-get install libtiff5-dev 
+sudo apt-get install libjasper-dev 
+sudo apt-get install libpng12-dev 
+#安装视频I/O包
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+#安装gtk2.0和优化函数包
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install libatlas-base-dev gfortran
+</code></pre>
+<h2 id="安装opencv">安装OpenCv</h2>
+<h3 id="下载opencv源码">下载OpenCv源码</h3>
+<pre><code class="language-shell">git clone https://github.com/opencv/opencv.git
+</code></pre>
+<h3 id="安装opencv-2">安装OpenCv</h3>
+<pre><code class="language-shell">#进入目录opencv下
+cd opencv
+#创建release文件夹
+mkdir release
+#进入目录release下
+cd release
+#cmake所有源文件并生成makefile
+cmake -D CMAKE_BUILD_TYPE=RELEASE \ 
+-D CMAKE_INSTALL_PREFIX=/usr/local ..
+#编译
+sudo make
+#安装
+sudo make install
+#更新动态链接库
+sudo ldconfig
+</code></pre>
+<ol>
+<li>在安装OpenCv的过程中，一定要下载OpenCv源码，否咋在编译的过程中会在不同的进度出现不同的报错（大部分是丢失文件）。</li>
+<li>编译过程长达数小时，一定要给树莓派充足的供电。</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="http://localhost:4001/post-images/1611844169021.png" alt="编译成功" loading="lazy"></figure>
+<h2 id="用python的cv2库运行opencv">用Python的CV2库运行OpenCv</h2>
+<h3 id="用cv2调用摄像头">用cv2调用摄像头</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+
+import cv2
+
+cap = cv2.VideoCapture(0) # 打开摄像头
+print(&quot;VideoCapture is opened?&quot;, cap.isOpened())
+
+while(True):
+
+    ret, frame = cap.read() # 读取摄像头图像
+    cv2.imshow(&quot;frame&quot;, frame) # 显示图片
+
+    if cv2.waitKey(1) &amp; 0xFF == ord('q'):
+        break
+
+cap.release() # 释放摄像头
+cv2.destroyAllWindows() # 关闭所有窗口
+</code></pre>
+<h4 id="效果">效果</h4>
+<p>桌面上弹出一个名为frame的窗口，窗口中为摄像头捕捉到的画面。</p>
+<blockquote>
+<p>待解决：</p>
+<p>这里似乎只有用远程桌面连接打开树莓派的桌面的时候才能够成功，如果是使用ssh访问，在WindowsTerminal中用命令行运行python程序则报错。</p>
+</blockquote>
+<h3 id="用cv2拍摄一段视频">用cv2拍摄一段视频</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+# 这一行代码解决不能输出中文的问题
+
+import cv2
+import time
+
+interval = 0.1           # 捕获图像的间隔，单位：秒
+num_frames = 60        # 捕获图像的总帧数
+out_fps = 24            # 输出文件的帧率
+
+# VideoCapture(0)表示打开默认的相机
+cap = cv2.VideoCapture(0)
+
+# 获取捕获的分辨率
+size =(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+
+# 设置要保存视频的编码，分辨率和帧率
+video = cv2.VideoWriter(
+    &quot;time_lapse.avi&quot;, 
+    cv2.VideoWriter_fourcc('M','P','4','2'), 
+    out_fps, 
+    size
+)
+
+# 对于一些低画质的摄像头，前面的帧可能不稳定，略过
+for i in range(42):
+    cap.read()
+
+# 开始捕获，通过read()函数获取捕获的帧
+try:
+    for i in range(num_frames):
+        _, frame = cap.read()
+        video.write(frame)
+
+        # 如果希望把每一帧也存成文件，比如制作GIF，则取消下面的注释
+        # filename = '{:0&gt;6d}.png'.format(i)
+        # cv2.imwrite(filename, frame)
+
+        print('Frame {} is captured.'.format(i))
+        time.sleep(interval)
+except KeyboardInterrupt:
+    # 提前停止捕获
+    print('Stopped! {}/{} frames captured!'.format(i, num_frames))
+
+# 释放资源并写入视频文件
+video.release()
+cap.release()
+</code></pre>
+<p>在python的开头记得加上<code># -*- coding: utf-8 -*-</code>这一行代码，可以解决无法显示汉语的问题。</p>
+<h4 id="效果-2">效果</h4>
+<p>运行python代码后，terminal会开始读秒，当截取完所有的帧数之后，会在桌面上生成命名为“time_lapse.avi”的视频文件。</p>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://blog.csdn.net/kyokozan/article/details/79192646">树莓派安装Opencv3完整过程</a></li>
+<li><a href="https://github.com/opencv/opencv">Opencv Github主页</a></li>
+<li><a href="https://www.cnblogs.com/shizhengwen/p/8719062.html">模块cv2的用法</a></li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[大学生们都在忙什么？]]></title>
-        <id>https://raspberryr.github.io/post/da-xue-sheng-men-du-zai-mang-shi-me/</id>
-        <link href="https://raspberryr.github.io/post/da-xue-sheng-men-du-zai-mang-shi-me/">
+        <id>http://localhost:4001/post/da-xue-sheng-men-du-zai-mang-shi-me/</id>
+        <link href="http://localhost:4001/post/da-xue-sheng-men-du-zai-mang-shi-me/">
         </link>
         <updated>2020-09-07T16:10:21.000Z</updated>
         <content type="html"><![CDATA[<h1 id="杰杰">杰杰</h1>
@@ -40,8 +173,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[Windows Termianl 基于SSH访问树莓派（SSH配置与JSON基本语法）]]></title>
-        <id>https://raspberryr.github.io/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/</id>
-        <link href="https://raspberryr.github.io/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/">
+        <id>http://localhost:4001/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/</id>
+        <link href="http://localhost:4001/post/windows-termianl-ji-yu-ssh-fang-wen-shu-mei-pai-ssh-pei-zhi-yu-json-ji-ben-yu-fa/">
         </link>
         <updated>2020-08-09T17:00:29.000Z</updated>
         <content type="html"><![CDATA[<p>之前玩树莓派4B都是借助于显示屏利用图形界面来控制，但是因为暑假在家只有一台显示器，平时连接着笔记本电脑，每次想要调试都需要拔插HDMI线，很不方便；平时用SSH访问树莓派都是借助于putty，但是那个界面实在是太丑陋了，最近正巧又发现了Windows Terminal这个软件属实不错，可以集成各种终端，界面现代化，可定制程度高，于是想到能不能借助于SSH访问树莓派呢？</p>
@@ -175,8 +308,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[用Visual Studio Code 配置 Arduino 开发环境中遇到的问题]]></title>
-        <id>https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/</id>
-        <link href="https://raspberryr.github.io/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/">
+        <id>http://localhost:4001/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/</id>
+        <link href="http://localhost:4001/post/yong-visual-studio-code-pei-zhi-arduino-kai-fa-huan-jing-zhong-yu-dao-de-wen-ti/">
         </link>
         <updated>2020-08-06T06:47:34.000Z</updated>
         <content type="html"><![CDATA[<h1 id="用visual-studio-code-配置-arduino-开发环境中遇到的问题">用Visual Studio Code 配置 Arduino 开发环境中遇到的问题</h1>
@@ -239,8 +372,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[关于郑州，我想的全是朱格乐]]></title>
-        <id>https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
-        <link href="https://raspberryr.github.io/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
+        <id>http://localhost:4001/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/</id>
+        <link href="http://localhost:4001/post/guan-yu-zheng-zhou-wo-xiang-de-quan-shi-zhu-ge-le/">
         </link>
         <updated>2020-06-29T16:56:35.000Z</updated>
         <content type="html"><![CDATA[<h1 id="百无聊赖的周一">百无聊赖的周一</h1>
@@ -279,8 +412,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[你好，我是张三]]></title>
-        <id>https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/</id>
-        <link href="https://raspberryr.github.io/post/ni-hao-wo-shi-zhang-san/">
+        <id>http://localhost:4001/post/ni-hao-wo-shi-zhang-san/</id>
+        <link href="http://localhost:4001/post/ni-hao-wo-shi-zhang-san/">
         </link>
         <updated>2020-06-23T15:19:55.000Z</updated>
         <content type="html"><![CDATA[<h2 id="我是谁">我是谁？👦</h2>
@@ -297,8 +430,8 @@ Are you sure you want to continue connecting (yes/no)?</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://raspberryr.github.io/post/hello-gridea/</id>
-        <link href="https://raspberryr.github.io/post/hello-gridea/">
+        <id>http://localhost:4001/post/hello-gridea/</id>
+        <link href="http://localhost:4001/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
